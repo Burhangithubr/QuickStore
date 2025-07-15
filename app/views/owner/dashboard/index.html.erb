@@ -1,0 +1,15 @@
+<h1>Owner Dashboard</h1>
+<p>Welcome, <%= current_user.email %></p>
+
+<%= link_to "➕ Add New Store", new_store_path, class: "btn btn-primary" %>
+
+<h2>Stores:</h2>
+<ul>
+  <% @stores.each do |store| %>
+    <li>
+      <%= link_to store.name, store_path(store), class: "store-link" %>
+    </li>
+  <% end %>
+</ul>
+
+<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>

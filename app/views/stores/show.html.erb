@@ -1,0 +1,22 @@
+<h2><%= @store.name %></h2>
+<p><%= "Description: #{@store.description}" %></p>
+<p><%= "Contact Info: #{@store.contact_info}" %></p>
+
+
+<h3>Staff Members:</h3>
+<ul>
+  <% @store.staff.each do |user| %>
+    <li><%= user.email %> - <%= @store.store_users.find_by(user_id: user.id)&.role %></li>
+  <% end %>
+</ul>
+
+<p>
+  <%= link_to "✏️ Edit Store", edit_store_path(@store), class: "btn" %>
+  <%= link_to "📦 View Products", store_products_path(@store), class: "btn" %>
+  <%= link_to "📑 View Orders", orders_path(store_id: @store.id), class: "btn" %>
+  <%= link_to "Assign Staff", new_store_store_user_path(@store), class: "btn btn-sm btn-primary" %>
+
+
+</p>
+
+<%= link_to "⬅ Back to Dashboard", owner_dashboard_path, class: "btn btn-secondary" %>

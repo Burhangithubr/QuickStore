@@ -1,0 +1,86 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+ html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+ .login-page-background {
+  background-image: url('background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-page-background.scrolled {
+  background-image: none;
+  background-color: yellow;
+}
+ .custom-login-container {
+  position: absolute;      /* Allow free placement */
+  top: 50px;               /* Distance from top of the page */
+  left: 50px;              /* Distance from left of the page */
+  padding: 50px;
+  border-radius: 10px;
+  font-size: 28px;
+}
+.flash-message {
+  background-color: #f44336; /* 🔴 Red background */
+  color: #fff;               /* White text */
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    font-size: 16px;
+}
+
+.dashboard-content {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 70, 70, 0.1); /* glass effect */
+  padding: 30px 40px;
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  color: #000000;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Typography */
+.dashboard-content h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.dashboard-content h2, .dashboard-content h3 {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #000000;
+}
+
+.dashboard-content p, .dashboard-content li {
+  font-size: 18px;
+  color: #000000;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+
+

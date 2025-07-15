@@ -1,0 +1,2 @@
+module StockManagerDashboardHelper
+end

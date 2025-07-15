@@ -1,0 +1,15 @@
+<h1>Assign Staff</h1>
+
+<%= form_with url: store_store_users_path(@store), method: :post, local: true do |f| %>
+  <div class="form-group">
+    <%= label_tag :email, "User Email" %>
+    <%= email_field_tag :email, nil, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :role, "Select Role" %>
+    <%= select_tag :role, options_for_select([["Stock Manager", "stock_manager"], ["Dispatcher", "dispatcher"]]), class: "form-control" %>
+  </div>
+
+  <%= f.submit "Assign or Invite", class: "btn btn-primary" %>
+<% end %>
