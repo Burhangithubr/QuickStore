@@ -1,10 +1,9 @@
 class StoresController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_store, only: [:show, :edit, :update]
-  before_action :authorize_owner!
-
+before_action :authorize_owner!
+before_action :set_store, only: [:show, :edit, :update]
 def show
-  @store = Store.find(params[:id])
+  @store 
 end
 
   def edit; end

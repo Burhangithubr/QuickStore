@@ -1,0 +1,16 @@
+<h2>Available Products</h2>
+
+<% @products.each do |product| %>
+  <div>
+    <h4><%= product.name %></h4>
+    <p><%= product.description %></p>
+    <p>Price: <%= product.price %></p>
+    <p>Available: <%= product.stock %></p>
+
+    <%= form_with url: customer_cart_items_path, method: :post do %>
+      <%= hidden_field_tag :product_id, product.id %>
+      <%= number_field_tag :quantity, 1, min: 1, max: product.stock %>
+      <%= submit_tag "Add to Cart" %>
+    <% end %>
+  </div>
+<% end %>

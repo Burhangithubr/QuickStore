@@ -22,6 +22,10 @@ class User < ApplicationRecord
   def owner?
     role == "owner"
   end
+  
+  def customer?
+    role == "customer"
+  end
 
   def stock_manager?
     role == "stock_manager"
