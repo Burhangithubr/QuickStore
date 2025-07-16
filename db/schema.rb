@@ -10,7 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_11_095140) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_16_084830) do
+  create_table "cart_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "cart_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity"
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "customer_id", null: false
+    t.index ["customer_id"], name: "index_carts_on_customer_id"
+  end
+
+  create_table "customers", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.index ["confirmation_token"], name: "index_customers_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_customers_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer "store_id", null: false
     t.datetime "created_at", null: false
@@ -27,6 +61,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_095140) do
     t.text "description"
     t.integer "stock"
     t.string "image"
+    t.integer "max_purchase_limit"
     t.index ["store_id"], name: "index_products_on_store_id"
   end
 
@@ -81,6 +116,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_11_095140) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "carts", "customers"
   add_foreign_key "orders", "stores"
   add_foreign_key "products", "stores"
   add_foreign_key "store_users", "stores"

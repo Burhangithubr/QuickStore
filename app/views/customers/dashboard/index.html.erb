@@ -1,0 +1,38 @@
+<h1>Customer Dashboard</h1>
+
+<h2>Available Products</h2>
+
+<% @products.each do |product| %>
+  <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    <h4><%= product.name %></h4>
+    <p><%= product.description %></p>
+    <p>Price: <%= number_to_currency(product.price) %></p>
+    <p>Stock Available: <%= product.stock %></p>
+
+    <%= form_with url: customers_cart_items_path, method: :post, local: true do %>
+      <%= hidden_field_tag :product_id, product.id %>
+      <%= number_field_tag :quantity, 1, min: 1, max: product.stock %>
+      <%= submit_tag "Add to Cart" %>
+    <% end %>
+  </div>
+<% end %>
+
+<hr>
+
+<h2>Your Cart</h2>
+<% if @cart.cart_items.any? %>
+  <ul>
+    <% @cart.cart_items.each do |item| %>
+      <li>
+        <%= item.product.name %> - Qty: <%= item.quantity %>
+        <%= button_to "Remove", customers_cart_item_path(item), method: :delete %>
+      </li>
+    <% end %>
+  </ul>
+  <%= link_to "Go to Cart", customers_cart_path, class: "button" %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+
+
+<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>

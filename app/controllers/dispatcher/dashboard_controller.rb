@@ -2,8 +2,8 @@ class Dispatcher::DashboardController < ApplicationController
  before_action :authenticate_user!
   before_action :ensure_dispatcher
 
-  def index
-    @stores = current_user.assigned_stores.includes(:orders)
+    def index
+    @store = current_user.store_users.find_by(role: "dispatcher")&.store
   end
 
   private

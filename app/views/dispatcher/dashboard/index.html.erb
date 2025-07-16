@@ -2,45 +2,11 @@
 
 <p>Welcome, <%= current_user.email %>!</p>
 
-<% if current_user.active_store %>
-  <h2>Store: <%= current_user.active_store.name %></h2>
+<% if @store %>
+  <p>Assigned Store: <%= @store.name %></p>
+  <% end %>
   
   <h3>Orders to Dispatch</h3>
 
-  <% if @orders.any? %>
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Customer</th>
-          <th>Address</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @orders.each do |order| %>
-          <tr>
-            <td><%= order.id %></td>
-            <td><%= order.customer_name %></td>
-            <td><%= order.shipping_address %></td>
-            <td><%= order.status %></td>
-            <td>
-              <% if order.status != "shipped" %>
-                <%= button_to "Mark as Shipped", mark_as_shipped_dispatcher_order_path(order), method: :patch, data: { confirm: "Mark this order as shipped?" } %>
-              <% else %>
-                Shipped
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>No orders to dispatch.</p>
-  <% end %>
 
-<% else %>
-  <p>No active store assigned.</p>
-<% end %>
 <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>

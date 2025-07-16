@@ -1,27 +1,16 @@
-<h1>Products for <%= @store.name %></h1>
+<% @products.each do |product| %>
+  <div class="product-box">
+    <strong><%= product.name %></strong> — $<%= product.price %><br>
+    Stock: <%= product.stock %> | Max/Order: <%= product.max_purchase_limit || "Unlimited" %><br>
 
-<% if @products.any? %>
-  <ul>
-    <% @products.each do |product| %>
-      <li>
-        <strong><%= product.name %></strong><br>
-        <%= product.description %><br>
-        Price: $<%= number_with_precision(product.price, precision: 2) %><br>
-        Stock: <%= product.stock %><br>
-        <% if product.image.present? %>
-          <img src="<%= product.image %>" alt="<%= product.name %>" width="100">
-        <% end %>
-
-        <br>
-        <%= link_to "✏️ Edit", edit_store_product_path(@store, product) %> |
-             <%= link_to "Delete", store_product_path(@store, product), data: { "turbo-method": :delete } %>
-      </li>
+    <% if product.stock > 0 %>
+      <%= form_with url: add_to_cart_path, method: :post, local: true do |f| %>
+        <%= hidden_field_tag :product_id, product.id %>
+        <%= number_field_tag :quantity, 1, min: 1, max: [product.stock, product.max_purchase_limit || product.stock].min %>
+        <%= submit_tag "Add to Cart", class: "btn btn-sm btn-success" %>
+      <% end %>
+    <% else %>
+      <p class="text-danger">Out of stock</p>
     <% end %>
-  </ul>
-<% else %>
-  <p>No products found.</p>
+  </div>
 <% end %>
-
-<%= link_to "➕ Add Product", new_store_product_path(@store), class: "btn btn-primary" %>
-<br><br>
-<%= link_to "⬅ Back to Store", store_path(@store), class: "btn btn-secondary" %>
