@@ -6,4 +6,11 @@ class Customer < ApplicationRecord
          :confirmable
 
          has_one :cart
+         has_many :orders
+         has_many :addresses
+
+          def default_address
+    addresses.find_by(default: true)
+  end
+
 end

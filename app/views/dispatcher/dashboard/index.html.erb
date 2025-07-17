@@ -1,12 +1,52 @@
-<h1>Dispatcher Dashboard</h1>
+<h1>Dispatcher Order Dashboard</h1>
 
-<p>Welcome, <%= current_user.email %>!</p>
+<%= link_to "Export as CSV", dispatcher_export_orders_path(format: :csv), class: "button" %>
 
-<% if @store %>
-  <p>Assigned Store: <%= @store.name %></p>
-  <% end %>
-  
-  <h3>Orders to Dispatch</h3>
+<table class="table table-bordered table-striped" style="width: 100%; text-align: left; border-collapse: collapse;">
+  <thead style="background-color: #f8f9fa;">
+    <tr>
+      <th>Order ID</th>
+      <th>Customer</th>
+      <th>Shipping Address</th>
+      <th>Status</th>
+      <th>Your Total</th>
+      <th>Store Name</th>
+      <th>Items</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order_items.group_by(&:order).each do |order, items| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.customer.email %></td>
+        <td><%= order.shipping_address %></td>
+        <td><span class="badge bg-warning text-dark"><%= order.status.capitalize %></span></td>
+        
+        <td>
+          <%= number_to_currency(items.sum { |item| item.quantity.to_f * (item.product&.price || 0) }) %>
+        </td>
+
+        <td>
+          <% store_names = items.map { |item| item.product&.store&.name }.uniq.compact %>
+          <% store_names.each do |store_name| %>
+            <p><strong><%= store_name %></strong></p>
+          <% end %>
+        </td>
+
+        <td>
+          <ul style="list-style: none; padding-left: 0; margin: 0;">
+            <% items.each do |item| %>
+              <li>
+                <%= item.product&.name || "No Product" %>
+                <span style="color: #6c757d;">× <%= item.quantity %></span>
+              </li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 
 <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>

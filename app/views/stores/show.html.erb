@@ -13,7 +13,7 @@
 <p>
   <%= link_to "✏️ Edit Store", edit_store_path(@store), class: "btn" %>
   <%= link_to "📦 View Products", store_products_path(@store), class: "btn" %>
-  <%= link_to "📑 View Orders", orders_path(store_id: @store.id), class: "btn" %>
+  <%= link_to "📑 View Orders", orders_path(store_id:@store.id), class: "btn" %>
   <%= link_to "Assign Staff", new_store_store_user_path(@store), class: "btn btn-sm btn-primary" %>
 
 

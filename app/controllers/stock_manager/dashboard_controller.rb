@@ -7,6 +7,11 @@ class StockManager::DashboardController < ApplicationController
     @products = @store.products 
     @product = @store.products.build 
   end
+    def destroy
+      @product.destroy
+      flash[:notice] = "Product deleted successfully."
+      redirect_back fallback_location: stock_manager_products_path
+    end
 
   private
 

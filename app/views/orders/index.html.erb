@@ -1,0 +1,47 @@
+<h2 class="mb-4">
+  <% if @store %>
+    Orders for Store: <strong><%= @store.name %></strong>
+  <% else %>
+    All Orders
+  <% end %>
+</h2>
+
+<% if @orders.any? %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Shipping Address</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= order.id %></td>
+          <td><%= order.customer.email rescue "N/A" %></td>
+          <td><%= order.shipping_address %></td>
+          <td><%= order.status.titleize %></td>
+         <td>
+  <% store_items = order.order_items.select { |item| item.product&.store_id == @store.id } %>
+  <%= number_to_currency(store_items.sum { |item| item.quantity.to_f * (item.product&.price || 0) }) %>
+</td>
+
+
+          <td>
+            <% order.order_items.each do |item| %>
+              <% if item.product.store_id == @store.id %>
+                <div><%= item.product.name %> × <%= item.quantity %></div>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No orders found for this store.</p>
+<% end %>

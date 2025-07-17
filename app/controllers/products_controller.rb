@@ -9,6 +9,11 @@ class ProductsController < ApplicationController
     @product = @store.products.build
   end
 
+  def show
+  @product = @store.products.find(params[:id])
+end
+
+
   def new
     @product = @store.products.build
   end
@@ -34,10 +39,13 @@ end
   end
 end
 
-  def destroy
-    @product.destroy
-    redirect_to store_products_path(@store), notice: "Product deleted successfully."
+ def destroy
+  if @product.destroy
+    redirect_to stock_manager_dashboard_path, notice: "Product deleted successfully."
+  else
+    redirect_to store_products_path(@store), alert: "Failed to delete product: #{@product.errors.full_messages.to_sentence}"
   end
+end
 
   private
 

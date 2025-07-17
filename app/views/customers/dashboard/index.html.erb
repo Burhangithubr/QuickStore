@@ -23,16 +23,24 @@
 <% if @cart.cart_items.any? %>
   <ul>
     <% @cart.cart_items.each do |item| %>
-      <li>
-        <%= item.product.name %> - Qty: <%= item.quantity %>
-        <%= button_to "Remove", customers_cart_item_path(item), method: :delete %>
+      <li style="margin-bottom: 10px;">
+        <strong><%= item.product.name %></strong><br>
+        Current Quantity: <%= item.quantity %><br>
       </li>
     <% end %>
   </ul>
+
   <%= link_to "Go to Cart", customers_cart_path, class: "button" %>
+
+
+
+
 <% else %>
   <p>Your cart is empty.</p>
 <% end %>
+<%= link_to "View My Orders", customers_orders_path, class: "button" %>
 
 
-<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+<hr>
+
+<%= button_to "Logout", destroy_customer_session_path, method: :delete, class: "logout-button" %>

@@ -15,8 +15,12 @@
         <strong><%= product.name %></strong> — $<%= product.price %><br>
         Stock: <%= product.stock %> |
         Max per order: <%= product.max_purchase_limit || "Unlimited" %><br>
+        
         <%= link_to "✏️ Edit", edit_store_product_path(@store, product) %>
-      </li>
+      <%= button_to "🗑 Delete", store_product_path(@store,product), method: :delete,
+              data: { confirm: "Are you sure you want to delete this product?" },
+              class: "btn btn-sm btn-danger" %>
+        </li>
     <% end %>
   </ul>
 <% else %>

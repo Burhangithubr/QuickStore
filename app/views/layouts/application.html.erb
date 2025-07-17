@@ -26,13 +26,13 @@
   <nav>
     <% if user_signed_in? %>
       <% if current_user.owner? %>
-        <%= link_to "Owner Dashboard", owner_dashboard_path %> |
+        <%= link_to "", owner_dashboard_path %> 
       <% elsif current_user.stock_manager? %>
-        <%= link_to "Stock Manager Dashboard", stock_manager_dashboard_path %> |
+        <%= link_to "", stock_manager_dashboard_path %> 
       <% elsif current_user.dispatcher? %>
-        <%= link_to "Dispatcher Dashboard", dispatcher_dashboard_path %> |
+        <%= link_to "", dispatcher_dashboard_path %> 
       <% end %>
-      <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+      <%= link_to "", destroy_user_session_path, method: :delete %>
 
     <% elsif customer_signed_in? %>
       <%= link_to "", customers_dashboard_path %> 
@@ -41,7 +41,7 @@
 
     <% else %>
       <%= link_to "", new_user_session_path %> 
-      <%= link_to "", new_customers_session_path %>
+      <%= link_to "", new_customer_session_path %>
     <% end %>
   </nav>
 <%= yield %>
