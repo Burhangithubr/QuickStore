@@ -23,22 +23,32 @@
   </head>
 
   <body>
-<% if user_signed_in? %>
   <nav>
-    <% if current_user.owner? %>
-      <%= link_to "", owner_dashboard_path %>
-    <% elsif current_user.stock_manager? %>
-      <%= link_to "Stock Dashboard", stock_dashboard_path %>
-    <% elsif current_user.dispatcher? %>
-      <%= link_to "Dispatcher Dashboard", dispatcher_dashboard_path %>
+    <% if user_signed_in? %>
+      <% if current_user.owner? %>
+        <%= link_to "", owner_dashboard_path %> 
+      <% elsif current_user.stock_manager? %>
+        <%= link_to "", stock_manager_dashboard_path %> 
+      <% elsif current_user.dispatcher? %>
+        <%= link_to "", dispatcher_dashboard_path %> 
+      <% end %>
+      <%= link_to "", destroy_user_session_path, method: :delete %>
+
+    <% elsif customer_signed_in? %>
+      <%= link_to "", customers_dashboard_path %> 
+      <%= link_to "", customers_cart_path %> 
+      <%= link_to "", destroy_customer_session_path, method: :delete %>
+
+    <% else %>
+      <%= link_to "", new_user_session_path %> 
+      <%= link_to "", new_customer_session_path %>
     <% end %>
   </nav>
-<% end %>
+<%= yield %>
+  <% flash.each do |key, message| %>
+    <p class="flash <%= key %>"><%= message %></p>
+  <% end %>
 
-    <%= yield %>
-   <% flash.each do |key, message| %>
-  <p class="flash <%= key %>"><%= message %></p>
-<% end %>
-
-  </body>
+  
+</body>
 </html>

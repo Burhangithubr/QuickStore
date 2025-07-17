@@ -1,0 +1,43 @@
+<h1>Shipping Address</h1>
+
+<%= form_with url: customers_orders_path, method: :post, local: true do %>
+
+  <% if current_customer.default_address %>
+    <p>
+      <label>
+        <%= radio_button_tag :use_default, "1", true %>
+        Use Default Address:
+        <br><%= current_customer.default_address.full_address %>
+      </label>
+    </p>
+
+    <p>
+      <label>
+        <%= radio_button_tag :use_default, "0" %> Use New Address:
+      </label>
+    </p>
+  <% else %>
+    <%= hidden_field_tag :use_default, "0" %>
+  <% end %>
+
+  <div id="new-address-field" style="<%= current_customer.default_address ? 'display:none;' : '' %>">
+    <%= label_tag :shipping_address, "New Shipping Address" %><br>
+    <%= text_area_tag :shipping_address, nil, rows: 3, cols: 40 %>
+  </div>
+
+  <br>
+  <%= submit_tag "Place Order" %>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const defaultRadio = document.querySelector("input[value='1']");
+    const newRadio = document.querySelector("input[value='0']");
+    const addressField = document.getElementById("new-address-field");
+
+    if (defaultRadio && newRadio) {
+      defaultRadio.addEventListener("change", () => addressField.style.display = "none");
+      newRadio.addEventListener("change", () => addressField.style.display = "block");
+    }
+  });
+</script>

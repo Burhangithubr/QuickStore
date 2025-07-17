@@ -1,2 +1,44 @@
-<h1>StockManager::Dashboard#index</h1>
-<p>Find me in app/views/stock_manager/dashboard/index.html.erb</p>
+<h1>Stock Manager Dashboard</h1>
+
+<% if @store %>
+  <p>Welcome, <%= current_user.email %> — managing store: <strong><%= @store.name %></strong></p>
+
+  <hr>
+
+  <h2>Products</h2>
+
+  <% if @products.present? %>
+  <ul>
+    <% @products.each do |product| %>
+           <% next if product.id.nil? %> 
+      <li>
+        <strong><%= product.name %></strong> — $<%= product.price %><br>
+        Stock: <%= product.stock %> |
+        Max per order: <%= product.max_purchase_limit || "Unlimited" %><br>
+        
+        <%= link_to "✏️ Edit", edit_store_product_path(@store, product) %>
+      <%= button_to "🗑 Delete", store_product_path(@store,product), method: :delete,
+              data: { confirm: "Are you sure you want to delete this product?" },
+              class: "btn btn-sm btn-danger" %>
+        </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No products available yet.</p>
+<% end %>
+
+  <hr>
+
+  <%= link_to "➕ Add Product", new_store_product_path(@store), class: "btn btn-primary" %>
+
+
+  <% if params[:show_form] %>
+    <h2>Add New Product</h2>
+    <%= render "products/form", store: @store, product: @product %>
+  <% end %>
+
+<% else %>
+  <p>You are not assigned to any store yet.</p>
+<% end %>
+
+<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>

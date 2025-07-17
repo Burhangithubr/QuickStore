@@ -1,0 +1,71 @@
+<h1>Your Cart</h1>
+
+<% if @cart.cart_items.any? %>
+  <% @cart.cart_items.each do |item| %>
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <h3><%= item.product.name %></h3>
+      <p>Current Quantity: <%= item.quantity %></p>
+
+      <%= form_with url: customers_cart_item_path(item), method: :patch, local: true do %>
+        <%= number_field_tag :quantity, item.quantity, min: 1, max: item.product.stock %>
+        <%= submit_tag "Update Quantity" %>
+      <% end %>
+
+      <%= button_to "Remove", customers_cart_item_path(item), method: :delete, data: { confirm: "Remove this item?" } %>
+    </div>
+  <% end %>
+
+  <hr>
+
+  <h2>Checkout</h2>
+
+  <%= form_with url: customers_orders_path, method: :post, local: true do %>
+    <% if current_customer.default_address %>
+      <p>
+        <label>
+          <%= radio_button_tag :use_default, "1", true %>
+          Use Default Address:
+          <br><%= current_customer.default_address.full_address %>
+        </label>
+      </p>
+
+      <p>
+        <label>
+          <%= radio_button_tag :use_default, "0" %>
+          Enter New Address:
+        </label>
+      </p>
+    <% else %>
+      <%= hidden_field_tag :use_default, "0" %>
+    <% end %>
+
+    <div id="new-address-field" style="<%= current_customer.default_address ? 'display:none;' : '' %>">
+      <%= label_tag :shipping_address, "Shipping Address" %><br>
+      <%= text_area_tag :shipping_address, nil, rows: 3, cols: 40 %>
+    </div>
+
+    <br>
+    <%= submit_tag "Place Order", class: "button" %>
+  <% end %>
+
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const defaultRadio = document.querySelector("input[name='use_default'][value='1']");
+    const newRadio = document.querySelector("input[name='use_default'][value='0']");
+    const addressField = document.getElementById("new-address-field");
+
+    if (defaultRadio && newRadio && addressField) {
+      defaultRadio.addEventListener("change", () => {
+        addressField.style.display = "none";
+      });
+
+      newRadio.addEventListener("change", () => {
+        addressField.style.display = "block";
+      });
+    }
+  });
+</script>

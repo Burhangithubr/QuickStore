@@ -183,7 +183,7 @@ Devise.setup do |config|
   # Auto-login after the user accepts the invite. If this is false,
   # the user will need to manually log in after accepting the invite.
   # Default: true
-  # config.allow_insecure_sign_in_after_accept = false
+  config.allow_insecure_sign_in_after_accept = false
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -369,4 +369,13 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+Rails.application.config.to_prepare do
+  Devise::Mailer.class_eval do
+    helper :application # to make sure main_app is accessible
+    include Devise::Controllers::UrlHelpers
+    default template_path: 'devise/mailer' # to make sure mailer uses your views
+  end
+end
+
+
 end
