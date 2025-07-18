@@ -61,6 +61,9 @@ end
   end
 
   if @order.save
+     OrderMailer.customer_order_confirmation(@order).deliver_later
+    OrderMailer.store_owner_notification(@order).deliver_later
+    
     @cart.cart_items.destroy_all
     redirect_to customers_dashboard_path, notice: "Thank you! Order placed successfully."
   else
