@@ -1,43 +1,78 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<!-- Crazy Gradient Background for Edit Profile -->
+<div style="min-height: 100vh; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); padding: 50px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: white;">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <!-- Neon Header -->
+  <h1 style="text-align: center; font-size: 36px; font-weight: 800; margin-bottom: 40px;
+    background: linear-gradient(to right, #00c6ff, #ff00cc);
+    -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
+    👤 Edit Your Profile
+  </h1>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <!-- Profile Form Card -->
+  <div style="max-width: 600px; margin: auto; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.5);">
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <!-- Email -->
+      <div style="margin-bottom: 20px;">
+        <%= f.label :email, "📧 Email", style: "display: block; font-weight: bold; margin-bottom: 8px;" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+          style: "width: 100%; padding: 12px; border-radius: 10px; border: none; background: #fff; color: #333; font-size: 14px;" %>
+      </div>
+
+      <!-- Password -->
+      <div style="margin-bottom: 20px;">
+        <%= f.label :password, "🔑 New Password", style: "display: block; font-weight: bold; margin-bottom: 8px;" %>
+        <%= f.password_field :password, autocomplete: "new-password",
+          style: "width: 100%; padding: 12px; border-radius: 10px; border: none; background: #fff; color: #333; font-size: 14px;" %>
+        <small>6 characters minimum</small>
+      </div>
+
+      <!-- Password Confirmation -->
+      <div style="margin-bottom: 20px;">
+        <%= f.label :password_confirmation, "🔒 Confirm Password", style: "display: block; font-weight: bold; margin-bottom: 8px;" %>
+        <%= f.password_field :password_confirmation,
+          style: "width: 100%; padding: 12px; border-radius: 10px; border: none; background: #fff; color: #333; font-size: 14px;" %>
+      </div>
+
+      <!-- Current Password -->
+      <div style="margin-bottom: 30px;">
+        <%= f.label :current_password, "🧠 Current Password", style: "display: block; font-weight: bold; margin-bottom: 8px;" %>
+        <%= f.password_field :current_password, autocomplete: "current-password",
+          style: "width: 100%; padding: 12px; border-radius: 10px; border: none; background: #fff; color: #333; font-size: 14px;" %>
+        <small>We need your current password to confirm your changes</small>
+      </div>
+
+      <!-- Update Button -->
+      <div style="text-align: center;">
+        <%= f.submit "💾 Update Profile",
+          style: "padding: 12px 30px; font-size: 16px; font-weight: bold; color: white; background: linear-gradient(to right, #4facfe, #00f2fe); border: none; border-radius: 12px; box-shadow: 0 0 12px rgba(0,242,254,0.6); cursor: pointer; transition: transform 0.3s ease;", onmouseover: "this.style.transform='scale(1.05)'", onmouseout: "this.style.transform='scale(1)'" %>
+      </div>
+
     <% end %>
+
+    <hr style="margin: 30px 0; border-color: rgba(255,255,255,0.2);" />
+
+    <!-- Cancel Account -->
+    <div style="text-align: center;">
+      <%= button_to "💔 Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure you want to cancel your account?" },
+          method: :delete,
+          style: "padding: 10px 20px; font-weight: bold; font-size: 14px; color: white; background: linear-gradient(to right, #ff512f, #dd2476); border: none; border-radius: 10px; box-shadow: 0 0 10px rgba(255, 81, 47, 0.6); cursor: pointer;" %>
+    </div>
+
+    <!-- Back Button with Role-Aware Redirection -->
+    <div style="text-align: center; margin-top: 20px;">
+      <% back_path = if customer_signed_in?
+                      customers_dashboard_path
+                    elsif user_signed_in?
+                      users_dashboard_path # replace with actual path for user
+                    else
+                      root_path
+                    end %>
+
+      <%= link_to "⬅️ Back to Dashboard", back_path,
+          style: "display: inline-block; margin-top: 10px; padding: 10px 25px; font-size: 14px; font-weight: bold; color: #00f2fe; background: rgba(0,0,0,0.2); border: 2px solid #00f2fe; border-radius: 10px; text-shadow: 1px 1px 2px black; transition: background 0.3s ease;", onmouseover: "this.style.background='rgba(0,0,0,0.4)'", onmouseout: "this.style.background='rgba(0,0,0,0.2)'" %>
+    </div>
+
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>

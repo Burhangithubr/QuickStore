@@ -1,22 +1,259 @@
-<h2><%= @store.name %></h2>
-<p><%= "Description: #{@store.description}" %></p>
-<p><%= "Contact Info: #{@store.contact_info}" %></p>
+<style>
+  body {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    margin: 0;
+  }
 
+  .container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 25px;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+  }
 
-<h3>Staff Members:</h3>
-<ul>
-  <% @store.staff.each do |user| %>
-    <li><%= user.email %> - <%= @store.store_users.find_by(user_id: user.id)&.role %></li>
+  h2.store-name {
+    font-size: 42px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #ff00cc, #3333ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+  }
+
+  p.description, p.contact-info {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ddd;
+  }
+
+  h3.staff-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffd700;
+    text-shadow: 0 0 10px #ffd700;
+  }
+
+  ul.staff-list {
+    list-style: none;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    padding: 0;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.3);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+  }
+
+  ul.staff-list li {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+    cursor: default;
+  }
+  ul.staff-list li:hover {
+    background: linear-gradient(to right, #ffcc00, #ffaa00);
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+
+  /* Buttons row with neon gradient backgrounds */
+  .btn-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  .btn-neon {
+    padding: 14px 28px;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 0, 204, 0.6);
+    background: linear-gradient(90deg, #ff00cc, #3333ff);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+  .btn-neon:hover {
+    filter: brightness(1.2);
+    box-shadow:
+      0 0 20px #ff00cc,
+      0 0 40px #3333ff,
+      0 0 60px #ff00cc;
+    transform: scale(1.1);
+  }
+
+  /* Different gradient colors for different buttons */
+  .btn-edit {
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    box-shadow: 0 0 15px #ffd200;
+    color: #000;
+  }
+  .btn-edit:hover {
+    box-shadow: 0 0 35px #ffd200;
+  }
+
+  .btn-products {
+    background: linear-gradient(90deg, #00f260, #0575e6);
+    box-shadow: 0 0 15px #00f260;
+  }
+  .btn-products:hover {
+    box-shadow: 0 0 35px #00f260;
+  }
+
+  .btn-orders {
+    background: linear-gradient(90deg, #4a00e0, #8e2de2);
+    box-shadow: 0 0 15px #8e2de2;
+  }
+  .btn-orders:hover {
+    box-shadow: 0 0 35px #8e2de2;
+  }
+
+  .btn-assign {
+    background: linear-gradient(90deg, #f7971e, #ff6a00);
+    box-shadow: 0 0 15px #ff6a00;
+    color: #000;
+  }
+  .btn-assign:hover {
+    box-shadow: 0 0 35px #ff6a00;
+  }
+
+  .btn-payment {
+    background: linear-gradient(90deg, #16a085, #1abc9c);
+    box-shadow: 0 0 15px #1abc9c;
+  }
+  .btn-payment:hover {
+    box-shadow: 0 0 35px #1abc9c;
+  }
+
+  /* Payment methods container */
+  .payment-methods {
+    max-width: 700px;
+    margin: 0 auto 50px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 25px 30px;
+    box-shadow: 0 0 25px rgba(51, 51, 255, 0.2);
+  }
+
+  .payment-methods h4 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #3333ff;
+    text-shadow: 0 0 10px #3333ff;
+  }
+
+  .payment-methods ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .payment-methods li {
+    font-weight: 600;
+    font-size: 18px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    background: linear-gradient(90deg, #3333ff, #00f2fe);
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 0 12px #00f2fe;
+    text-transform: capitalize;
+    transition: background 0.3s ease;
+  }
+  .payment-methods li:hover {
+    background: linear-gradient(90deg, #00f2fe, #3333ff);
+    box-shadow: 0 0 22px #00f2fe;
+  }
+
+  /* Back to Dashboard Button */
+  .btn-back {
+    display: block;
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 14px 30px;
+    background: linear-gradient(90deg, #3333ff, #00f2fe);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.8);
+    transition: all 0.3s ease;
+  }
+  .btn-back:hover {
+    filter: brightness(1.3);
+    box-shadow: 0 0 40px #00f2fe;
+    transform: scale(1.05);
+  }
+</style>
+
+<div class="container">
+  <h2 class="store-name"><%= @store.name %></h2>
+
+  <p class="description"><strong>Description:</strong> <%= @store.description %></p>
+  <p class="contact-info"><strong>Contact Info:</strong> <%= @store.contact_info %></p>
+
+  <h3 class="staff-title">👥 Staff Members:</h3>
+  <ul class="staff-list">
+    <% @store.staff.each do |user| %>
+      <li>
+        <span><%= user.email %></span>
+        <span><%= @store.store_users.find_by(user_id: user.id)&.role %></span>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="btn-row">
+    <%= link_to "✏️ Edit Store", edit_store_path(@store), class: "btn-neon btn-edit" %>
+    <%= link_to "📦 View Products", store_products_path(@store), class: "btn-neon btn-products" %>
+    <%= link_to "📑 View Orders", orders_path(store_id: @store.id), class: "btn-neon btn-orders" %>
+    <%= link_to "👤 Assign Staff", new_store_store_user_path(@store), class: "btn-neon btn-assign" %>
+    <%= link_to "💳 Add Payment Method", new_store_payment_method_path(@store), class: "btn-neon btn-payment" %>
+  </div>
+
+  <div class="payment-methods">
+    <h4>Available Payment Method</h4>
+    <ul>
+      <% if @store.payment_methods.any? %>
+        <% latest_pm = @store.payment_methods.order(created_at: :desc).first %>
+        <li><%= latest_pm.name %> — <%= latest_pm.payment_type.titleize %></li>
+      <% else %>
+        <li>No payment methods added yet.</li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% if current_user.owner? %>
+    <%= link_to "⬅ Back to Owner Dashboard", owner_dashboard_path, class: "btn-back" %>
+  <% else %>
+    <%= link_to "⬅ Back to User Dashboard", user_dashboard_path, class: "btn-back" %>
   <% end %>
-</ul>
-
-<p>
-  <%= link_to "✏️ Edit Store", edit_store_path(@store), class: "btn" %>
-  <%= link_to "📦 View Products", store_products_path(@store), class: "btn" %>
-  <%= link_to "📑 View Orders", orders_path(store_id: @store.id), class: "btn" %>
-  <%= link_to "Assign Staff", new_store_store_user_path(@store), class: "btn btn-sm btn-primary" %>
-
-
-</p>
-
-<%= link_to "⬅ Back to Dashboard", owner_dashboard_path, class: "btn btn-secondary" %>
+</div>

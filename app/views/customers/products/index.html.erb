@@ -1,0 +1,33 @@
+<div style="min-height: 100vh; padding: 40px; background: linear-gradient(135deg, #1f1c2c, #928dab); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+  <!-- Glowing Centered Title -->
+  <h2 style="text-align: center; font-size: 32px; font-weight: 800; color: #fff; text-shadow: 0 0 12px #00ffcc;">
+    🛍️ Products for <%= @store.name %>
+  </h2>
+
+  <% if @products.any? %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 40px;">
+      <% @products.each do |product| %>
+        <div style="background: linear-gradient(to right, #ffcc70, #ff8177); border-radius: 15px; padding: 20px; color: #222; box-shadow: 0 10px 20px rgba(0,0,0,0.4); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 16px 32px rgba(0,0,0,0.6)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.4)'">
+
+          <h4 style="font-size: 20px; font-weight: bold; margin-bottom: 10px;"><%= product.name %></h4>
+          <p style="margin-bottom: 8px;"><strong>🧵 Description:</strong> <%= product.description %></p>
+          <p style="margin-bottom: 6px;"><strong>💰 Price:</strong> $<%= product.price %></p>
+          <p style="margin-bottom: 10px;"><strong>📦 Available:</strong> <%= product.stock %></p>
+
+          <%= form_with url: customers_cart_items_path, method: :post, html: { style: "margin-top: 10px;" } do %>
+            <%= hidden_field_tag :product_id, product.id %>
+            <label for="quantity" style="font-weight: bold;">Quantity:</label><br>
+            <%= number_field_tag :quantity, 1, min: 1, max: product.stock, style: "padding: 6px; border-radius: 8px; border: 1px solid #ccc; width: 100px; margin-bottom: 10px;" %><br>
+
+            <%= submit_tag "Add to Cart", style: "background: #ff0057; color: white; padding: 8px 16px; border-radius: 10px; border: none; font-weight: bold; box-shadow: 0 0 10px rgba(255,0,87,0.6); cursor: pointer; transition: background 0.3s ease;" %>
+          <% end %>
+
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p style="color: #eee; font-size: 18px; text-align: center; margin-top: 40px;">🚫 This store has no products available at the moment.</p>
+  <% end %>
+
+</div>
