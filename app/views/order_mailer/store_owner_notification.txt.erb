@@ -1,0 +1,10 @@
+New Order Received
+
+Hello <%= @store_owner.email %>,
+
+You have received a new order (##<%= @order.id %>) for your store <%= @order.store.name %>.
+
+Total Amount: $<%= @order.total_amount %>
+Shipping Address: <%= @order.shipping_address %>
+
+Please log in to your dashboard to view more details.

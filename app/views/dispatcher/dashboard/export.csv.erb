@@ -1,0 +1,4 @@
+Order ID,Customer Email,Shipping Address,Status,Total Amount,Items
+<% @orders.each do |order| %>
+<%= order.id %>,<%= order.customer.email %>,<%= order.shipping_address %>,<%= order.status %>,<%= order.total_amount %>,"<%= order.order_items.map { |item| "#{item.product.name} x #{item.quantity}" }.join('; ') %>"
+<% end %>

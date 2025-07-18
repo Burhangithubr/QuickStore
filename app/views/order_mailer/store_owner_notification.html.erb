@@ -1,0 +1,10 @@
+<h2>New Order Received</h2>
+
+<p>Hello <%= @store_owner.email %>,</p>
+
+<p>You have received a new order (##<%= @order.id %>) for your store <strong><%= @order.store.name %></strong>.</p>
+
+<p><strong>Total Amount:</strong> $<%= @order.total_amount %></p>
+<p><strong>Shipping Address:</strong> <%= @order.shipping_address %></p>
+
+<p>Please log in to your dashboard to view more details.</p>

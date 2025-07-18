@@ -1,29 +1,45 @@
-<h2>Sign up</h2>
+<!-- Page Background and Wrapper -->
+<div style="min-height: 100vh; background: linear-gradient(135deg, #ff6ec4, #7873f5); display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; flex-direction: column; padding: 30px;">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <!-- Crazy Quickstore Logo Header -->
+  <div style="text-align: center; margin-bottom: 35px;">
+    <h1 style="font-size: 48px; font-weight: 900; letter-spacing: 3px; background: linear-gradient(90deg, #ff6ec4, #7873f5); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+      🛒 Quickstore
+    </h1>
+    <p style="font-size: 16px; color: #fff; font-style: italic;">
+      Sign up to get started! 🚀
+    </p>
   </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+  <!-- Sign Up Form Box -->
+  <div style="background-color: white; padding: 40px 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); width: 100%; max-width: 450px;">
+    <h2 style="text-align: center; margin-bottom: 30px; font-weight: bold; font-size: 28px;">Sign Up</h2>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <div style="margin-bottom: 20px;">
+        <%= f.label :email, style: "display: block; font-weight: bold;" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", style: "width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" %>
+      </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+      <div style="margin-bottom: 20px;">
+        <%= f.label :password, style: "display: block; font-weight: bold;" %>
+        <%= f.password_field :password, autocomplete: "new-password", style: "width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" %>
+        <small>(6 characters minimum)</small>
+      </div>
 
-<%= render "devise/shared/links" %>
+      <div style="margin-bottom: 25px;">
+        <%= f.label :password_confirmation, style: "display: block; font-weight: bold;" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", style: "width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;" %>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <%= f.submit "Sign up", style: "padding: 10px 20px; background-color: #ff6ec4; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;" %>
+      </div>
+    <% end %>
+
+    <div style="text-align: center; font-size: 14px; margin-top: 10px;">
+      <%= link_to "Log in", new_session_path(resource_name), style: "color: #007bff; text-decoration: none;" %><br>
+      <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), style: "color: #007bff; text-decoration: none;" %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<h1>Product Details</h1>
+
+<p><strong>Name:</strong> <%= @product.name %></p>
+<p><strong>Description:</strong> <%= @product.description.presence || "No description provided" %></p>
+<p><strong>Price:</strong> $<%= number_with_precision(@product.price, precision: 2) %></p>
+<p><strong>Stock:</strong> <%= @product.stock %></p>
+<p><strong>Max Per Order:</strong> <%= @product.max_purchase_limit || "Unlimited" %></p>
+
+<% if @product.image.present? %>
+  <div class="product-image my-3">
+    <img src="<%= @product.image %>" alt="<%= @product.name %>" style="max-width: 200px;">
+  </div>
+<% end %>
+
+<hr>
+
+<% if current_user.stock_manager? %>
+  <%= link_to "✏️ Edit", edit_store_product_path(@store, @product), class: "btn btn-warning me-2" %>
+  <%= link_to "🗑 Delete", store_product_path(@store, @product),
+              method: :delete,
+              data: { confirm: "Are you sure you want to delete this product?" },
+              class: "btn btn-danger" %>
+<% else %>
+  <p class="text-muted">You have read-only access to this product.</p>
+<% end %>
+
+<%= link_to "⬅ Back to Product List", store_products_path(@store), class: "btn btn-secondary mt-3" %>

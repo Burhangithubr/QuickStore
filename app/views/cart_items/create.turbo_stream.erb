@@ -1,0 +1,3 @@
+<turbo-stream action="update" target="cart-count">
+  <template><%= @cart.cart_items.sum(:quantity) %></template>
+</turbo-stream>

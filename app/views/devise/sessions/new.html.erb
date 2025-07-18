@@ -1,26 +1,44 @@
-<h2>Log in</h2>
+<div style="min-height: 100vh; background: linear-gradient(135deg, #ff6ec4, #7873f5); display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<div style="text-align: center; margin-bottom: 40px;">
+  <h1 style="font-size: 48px; font-weight: 900; letter-spacing: 3px; background: linear-gradient(90deg, #ff6ec4, #7873f5); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+    🛒 Quickstore
+  </h1>
+  <p style="font-size: 16px; color: #fff; font-style: italic; margin-top: -10px;">
+    Your wild shopping world ✨
+  </p>
+</div>  
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<div style="background-color: white; padding: 40px 35px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); width: 100%; max-width: 450px;">
+
+    <h2 style="text-align: center; font-size: 32px; color: #6f42c1; font-weight: bold; margin-bottom: 25px; text-shadow: 1px 1px 2px #aaa;">🔐 Log In</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div style="margin-bottom: 20px;">
+        <%= f.label :email, "📧 Email", style: "font-weight: bold; color: #333;" %><br>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", style: "width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px;" %>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <%= f.label :password, "🔒 Password", style: "font-weight: bold; color: #333;" %><br>
+        <%= f.password_field :password, autocomplete: "current-password", style: "width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 15px;" %>
+      </div>
+
+      <div style="margin-bottom: 20px; display: flex; align-items: center;">
+        <%= f.check_box :remember_me, style: "margin-right: 10px;" %>
+        <%= f.label :remember_me, "Remember me", style: "color: #555; font-size: 14px;" %>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <%= f.submit "🚀 Sign in", style: "background-color: #6f42c1; color: white; font-size: 16px; font-weight: bold; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease;" %>
+      </div>
+    <% end %>
+
+    <div style="text-align: center; margin-top: 15px;">
+      <%= link_to "📝 Sign up", new_registration_path(resource_name), style: "color: #007bff; text-decoration: none; font-weight: bold;" %><br>
+      <%= link_to "❓ Forgot your password?", new_password_path(resource_name), style: "color: #dc3545; text-decoration: none;" %><br>
+      <%= link_to "📨 Didn't receive confirmation instructions?", new_confirmation_path(resource_name), style: "color: #28a745; text-decoration: none;" %>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

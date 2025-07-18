@@ -1,0 +1,111 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+  body {
+    background: radial-gradient(circle, #0f0f0f, #000000);
+    animation: bgPulse 10s infinite alternate;
+  }
+
+  .crazy-form-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 35px;
+    background: linear-gradient(145deg, #1b1b1b, #0d0d0d);
+    border: 2px solid #0ff;
+    border-radius: 25px;
+    box-shadow: 0 0 30px #0ff, 0 0 60px #00f inset;
+    font-family: 'Orbitron', sans-serif;
+    color: #0ff;
+    animation: pulseGlow 2.5s infinite alternate;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .crazy-form-container:hover {
+    transform: scale(1.01) rotate(-0.2deg);
+  }
+
+  .crazy-form-container label {
+    font-size: 14px;
+    color: #ffffffcc;
+    text-shadow: 0 0 4px #00f;
+    letter-spacing: 1px;
+  }
+
+  .crazy-form-container input,
+  .crazy-form-container select {
+    background-color: #0a0a0a;
+    color: #0ff;
+    border: 1px solid #00f;
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px #00f inset;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .crazy-form-container input:focus,
+  .crazy-form-container select:focus {
+    outline: none;
+    box-shadow: 0 0 25px #0ff, 0 0 15px #00f inset;
+    transform: scale(1.02);
+  }
+
+  .btn-neon {
+    background: linear-gradient(90deg, #ff00cc, #3333ff);
+    color: white;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 0 20px #ff00cc;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+    width: 100%;
+    letter-spacing: 2px;
+  }
+
+  .btn-neon:hover {
+    background: linear-gradient(90deg, #00f0ff, #ff00f7);
+    box-shadow: 0 0 40px #00f0ff, 0 0 60px #ff00f7;
+    transform: scale(1.05) rotate(1deg);
+  }
+
+  @keyframes pulseGlow {
+    0% {
+      box-shadow: 0 0 12px #0ff;
+    }
+    100% {
+      box-shadow: 0 0 30px #0ff, 0 0 45px #00f inset;
+    }
+  }
+
+  @keyframes bgPulse {
+    0% {
+      background-color: #0d0d0d;
+    }
+    100% {
+      background-color: #111;
+    }
+  }
+</style>
+
+<div class="crazy-form-container">
+  <%= form_with model: [@store, @payment_method], local: true do |f| %>
+    <div class="mb-3">
+      <%= f.label :name, "Payment Method Name" %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :payment_type, "Choose Type" %>
+      <%= f.select :payment_type, ["COD", "Mock"] %>
+    </div>
+
+    <%= f.submit "Add Payment Method", class: "btn-neon" %>
+  <% end %>
+</div>

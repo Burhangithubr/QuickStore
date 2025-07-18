@@ -1,0 +1,16 @@
+<h1>Order Summary</h1>
+
+<p><strong>Status:</strong> <%= @order.status %></p>
+<p><strong>Shipping Address:</strong><br><%= @order.shipping_address %></p>
+<p><strong>Total:</strong> <%= number_to_currency(@order.total_amount) %></p>
+
+<h3>Items:</h3>
+<ul>
+  <% @order.order_items.each do |item| %>
+    <li>
+      <%= item.product.name %> — Qty: <%= item.quantity %> — Price: <%= number_to_currency(item.unit_price) %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "Back to Dashboard", customers_dashboard_path %>

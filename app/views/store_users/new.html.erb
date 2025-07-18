@@ -1,3 +1,129 @@
+<style>
+  body {
+    background: radial-gradient(circle at top left, #0d0d1a, #1a1a33);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0e0ff;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 40px;
+    background: linear-gradient(90deg, #00fff7, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: neonGlow 2s ease-in-out infinite alternate;
+    text-shadow:
+      0 0 6px #00fff7,
+      0 0 12px #00fff7,
+      0 0 20px #0099ff,
+      0 0 40px #0099ff,
+      0 0 80px #00e5ff;
+  }
+
+  @keyframes neonGlow {
+    from {
+      text-shadow:
+        0 0 10px #00fff7,
+        0 0 20px #00fff7,
+        0 0 30px #0099ff,
+        0 0 50px #0099ff,
+        0 0 100px #00e5ff;
+    }
+    to {
+      text-shadow:
+        0 0 20px #00ccff,
+        0 0 30px #0099ff,
+        0 0 40px #00ccff,
+        0 0 60px #00ccff,
+        0 0 120px #00ccff;
+    }
+  }
+
+  form {
+    max-width: 450px;
+    margin: 0 auto;
+    background: rgba(10, 10, 30, 0.8);
+    padding: 30px 40px;
+    border-radius: 25px;
+    box-shadow:
+      0 0 20px #00e5ff,
+      0 0 40px #0066cc;
+    backdrop-filter: blur(10px);
+    border: 2px solid #00ccff;
+    transition: box-shadow 0.3s ease;
+  }
+
+  form:hover {
+    box-shadow:
+      0 0 40px #00e5ff,
+      0 0 60px #00ccff,
+      0 0 100px #0066cc;
+  }
+
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #7fe0ff;
+    text-shadow: 0 0 6px #00ccff;
+    font-size: 1.1rem;
+  }
+
+  input[type="email"],
+  select {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 25px;
+    border: none;
+    border-radius: 15px;
+    background: #003366;
+    color: #ccefff;
+    font-size: 1rem;
+    box-shadow:
+      inset 0 0 8px #00ccff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input[type="email"]:focus,
+  select:focus {
+    background: #0055aa;
+    outline: none;
+    box-shadow:
+      0 0 20px #00ccff,
+      inset 0 0 12px #00ccff;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #003366;
+    background: linear-gradient(90deg, #00fff7, #00ccff);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow:
+      0 0 20px #00ccff,
+      0 0 30px #0099ff;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(90deg, #00ccff, #0077ff);
+    transform: scale(1.05);
+    box-shadow:
+      0 0 40px #00ccff,
+      0 0 60px #0077ff,
+      0 0 90px #0055cc;
+  }
+</style>
+
 <h1>Assign Staff</h1>
 
 <%= form_with url: store_store_users_path(@store), method: :post, local: true do |f| %>
