@@ -10,45 +10,91 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-  <nav>
-    <% if user_signed_in? %>
-      <% if current_user.owner? %>
-        <%= link_to "", owner_dashboard_path %> 
-      <% elsif current_user.stock_manager? %>
-        <%= link_to "", stock_manager_dashboard_path %> 
-      <% elsif current_user.dispatcher? %>
-        <%= link_to "", dispatcher_dashboard_path %> 
+    <nav>
+      <% if user_signed_in? %>
+        <% if current_user.owner? %>
+          <%= link_to "", owner_dashboard_path %> 
+        <% elsif current_user.stock_manager? %>
+          <%= link_to "", stock_manager_dashboard_path %> 
+        <% elsif current_user.dispatcher? %>
+          <%= link_to "", dispatcher_dashboard_path %> 
+        <% end %>
+        <%= link_to "", destroy_user_session_path, method: :delete %>
+
+      <% elsif customer_signed_in? %>
+        <%= link_to "", customers_dashboard_path %> 
+        <%= link_to "", customers_cart_path %> 
+        <%= link_to "", destroy_customer_session_path, method: :delete %>
+
+      <% else %>
+        <%= link_to "", new_user_session_path %> 
+        <%= link_to "", new_customer_session_path %>
       <% end %>
-      <%= link_to "", destroy_user_session_path, method: :delete %>
+    </nav>
 
-    <% elsif customer_signed_in? %>
-      <%= link_to "", customers_dashboard_path %> 
-      <%= link_to "", customers_cart_path %> 
-      <%= link_to "", destroy_customer_session_path, method: :delete %>
-
-    <% else %>
-      <%= link_to "", new_user_session_path %> 
-      <%= link_to "", new_customer_session_path %>
+    <%# Flash message (optional) %>
+    <% if flash[:notice] %>
+      <div id="flash-message" style="
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        padding: 15px 20px;
+        margin: 20px auto;
+        border-radius: 8px;
+        max-width: 600px;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+        <%= flash[:notice] %>
+      </div>
     <% end %>
-  </nav>
-<%= yield %>
-  <% flash.each do |key, message| %>
-    <p class="flash <%= key %>"><%= message %></p>
-  <% end %>
 
-  
-</body>
+    <%# 🛒 Floating Cart Icon for Customers %>
+    <% if customer_signed_in? %>
+  <div style="position: fixed; top: 20px; right: 30px; z-index: 1000; display: flex; align-items: center; gap: 22px;">
+
+    <!-- Order History Link -->
+    <%= link_to customers_orders_path,
+          style: "text-decoration: none; position: relative; display: inline-block; font-size: 26px; line-height: 1;" do %>
+      📦
+      <span style="position: absolute; top: -10px; right: -14px; background: #00bcd4; color: white; border-radius: 50%; padding: 3px 7px; font-size: 11px; font-weight: bold; box-shadow: 0 0 8px rgba(0,188,212,0.7);">
+        <%= current_customer.orders.count %>
+      </span>
+    <% end %>
+
+    <!-- Cart Link -->
+    <% if @cart.present? %>
+      <%= link_to customers_cart_path,
+            style: "text-decoration: none; position: relative; display: inline-block; font-size: 28px; line-height: 1;" do %>
+        🛒
+        <span id="cart-count" style="position: absolute; top: -12px; right: -12px; background: #ff0057; color: white; border-radius: 50%; padding: 4px 8px; font-size: 12px; font-weight: bold; box-shadow: 0 0 8px rgba(255,0,87,0.6);">
+          <%= @cart.cart_items.count  %>
+        </span>
+      <% end %>
+    <% end %>
+
+  </div>
+<% end %>
+
+
+
+    <%= yield %>
+
+    <script>
+      setTimeout(function() {
+        const flash = document.getElementById("flash-message");
+        if (flash) flash.style.display = "none";
+      }, 4000);
+    </script>
+  </body>
 </html>

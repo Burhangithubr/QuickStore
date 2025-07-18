@@ -1,8 +1,10 @@
+# app/controllers/customers/products_controller.rb
 class Customers::ProductsController < ApplicationController
-  before_action :authenticate_customer! # <- use Devise's helper for Customer model
+  before_action :authenticate_customer!
 
   def index
-    @products = Product.where("stock > 0")
+    @store = Store.find(params[:store_id])
+    @products = @store.products.where("stock > 0")
   end
 
   def show

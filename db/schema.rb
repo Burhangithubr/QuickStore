@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_16_110824) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_17_104102) do
   create_table "addresses", force: :cascade do |t|
     t.integer "customer_id", null: false
     t.text "full_address"
@@ -73,8 +73,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_110824) do
     t.decimal "total_amount"
     t.string "status"
     t.text "shipping_address"
+    t.integer "payment_method_id"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["payment_method_id"], name: "index_orders_on_payment_method_id"
     t.index ["store_id"], name: "index_orders_on_store_id"
+  end
+
+  create_table "payment_methods", force: :cascade do |t|
+    t.string "name"
+    t.string "payment_type"
+    t.integer "store_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["store_id"], name: "index_payment_methods_on_store_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -148,7 +159,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_16_110824) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "payment_methods"
   add_foreign_key "orders", "stores"
+  add_foreign_key "payment_methods", "stores"
   add_foreign_key "products", "stores"
   add_foreign_key "store_users", "stores"
   add_foreign_key "store_users", "users"

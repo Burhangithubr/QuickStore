@@ -33,6 +33,7 @@ end
     resources :products
     resources :orders, only: [:index, :show]
     resources :store_users, only: [:index, :new, :create]
+    resources :payment_methods
   end
 
   resources :orders, only: [:index, :show]
@@ -40,14 +41,16 @@ end
  namespace :customers do
   get 'dashboard', to: 'dashboard#index'
   resource :cart, only: [:show]
-  resources :cart_items, only: [:create,:update, :destroy]
-  resources :products, only: [:index, :show]
-  resources :orders, only: [:new, :create, :show,:index]
-  resources :addresses do
-    member do
-      patch :make_default
-    end
+  resources :cart_items, only: [:create, :update, :destroy]
+  resources :orders, only: [:new, :create, :show, :index]
+
+  resources :stores, only: [] do
+    resources :products, only: [:index]
+
   end
+end
+namespace :customers do
+  resource :profile, only: [:show, :edit, :update]
 end
 
   # config/routes.rb

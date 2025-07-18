@@ -1,44 +1,154 @@
-<h1>Stock Manager Dashboard</h1>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+  body {
+    margin: 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2 {
+    text-align: center;
+    font-size: 3rem;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff, 0 0 25px #0ff;
+    margin-bottom: 1rem;
+  }
+
+  p, strong {
+    font-size: 1.1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    background: rgba(0, 255, 247, 0.15);
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #00fff7;
+    box-shadow: 0 0 12px #00fff7;
+    transition: all 0.35s ease;
+    backdrop-filter: blur(5px);
+  }
+
+  li:hover {
+    transform: scale(1.03) rotate(-1deg);
+    background: rgba(0, 255, 247, 0.3);
+  }
+
+  .btn {
+    margin-top: 0.6rem;
+    margin-right: 0.6rem;
+    display: inline-block;
+    background: linear-gradient(to right, #ff6ec4, #7873f5);
+    border: none;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn:hover {
+    background: linear-gradient(to right, #7873f5, #ff6ec4);
+    transform: scale(1.1);
+    box-shadow: 0 0 18px #ff6ec4;
+  }
+
+  .btn-danger {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+  }
+
+  .btn-danger:hover {
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    box-shadow: 0 0 18px #ff416c;
+  }
+
+  .centered {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .logout-button {
+    display: block;
+    margin: 3rem auto 0;
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    padding: 0.7rem 2.5rem;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 0 15px #ff4b2b;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .logout-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #ff416c;
+  }
+
+  hr {
+    border: 0;
+    height: 2px;
+    background: #00fff7;
+    box-shadow: 0 0 10px #00fff7;
+    margin: 2rem auto;
+    width: 80%;
+  }
+
+</style>
+
+<h1>⚡ Stock Manager Dashboard ⚡</h1>
 
 <% if @store %>
-  <p>Welcome, <%= current_user.email %> — managing store: <strong><%= @store.name %></strong></p>
+  <p style="text-align: center;">👋 Welcome, <%= current_user.email %> — Managing Store: 
+    <strong><%= @store.name %></strong>
+  </p>
 
   <hr>
 
-  <h2>Products</h2>
+  <h2>🛍️ Products</h2>
 
   <% if @products.present? %>
-  <ul>
-    <% @products.each do |product| %>
-           <% next if product.id.nil? %> 
-      <li>
-        <strong><%= product.name %></strong> — $<%= product.price %><br>
-        Stock: <%= product.stock %> |
-        Max per order: <%= product.max_purchase_limit || "Unlimited" %><br>
-        
-        <%= link_to "✏️ Edit", edit_store_product_path(@store, product) %>
-      <%= button_to "🗑 Delete", store_product_path(@store,product), method: :delete,
+    <ul>
+      <% @products.each do |product| %>
+        <% next if product.id.nil? %> 
+        <li>
+          <strong>🧾 <%= product.name %></strong> — 💲<%= product.price %><br>
+          📦 Stock: <%= product.stock %> |
+          🎯 Max per order: <%= product.max_purchase_limit || "Unlimited" %><br><br>
+
+          <%= link_to "✏️ Edit", edit_store_product_path(@store, product), class: "btn" %>
+          <%= button_to "🗑 Delete", store_product_path(@store,product), method: :delete,
               data: { confirm: "Are you sure you want to delete this product?" },
-              class: "btn btn-sm btn-danger" %>
+              class: "btn btn-danger" %>
         </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No products available yet.</p>
-<% end %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="centered">🚫 No products available yet.</p>
+  <% end %>
 
-  <hr>
-
-  <%= link_to "➕ Add Product", new_store_product_path(@store), class: "btn btn-primary" %>
-
+  <div class="centered">
+    <%= link_to "➕ Add Product", new_store_product_path(@store), class: "btn" %>
+  </div>
 
   <% if params[:show_form] %>
-    <h2>Add New Product</h2>
+    <h2>➕ Add New Product</h2>
     <%= render "products/form", store: @store, product: @product %>
   <% end %>
 
 <% else %>
-  <p>You are not assigned to any store yet.</p>
+  <p class="centered">⚠️ You are not assigned to any store yet.</p>
 <% end %>
 
-<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+<%= button_to "🚪 Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>

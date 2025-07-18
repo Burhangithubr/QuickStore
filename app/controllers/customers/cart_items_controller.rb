@@ -13,28 +13,29 @@ before_action :set_cart_item, only: [:update, :destroy]
     cart_item.quantity = [new_quantity, product.stock].min
 
     if cart_item.save
-      redirect_to customers_dashboard_path, notice: "Added to cart."
+      redirect_to customers_store_products_path(product.store), notice: "Added to cart."
     else
       redirect_to customers_dashboard_path, alert: "Could not add to cart."
     end
   end
 
 def update
-    new_quantity = params[:quantity].to_i
-    product = @cart_item.product
+  new_quantity = params[:cart_item][:quantity].to_i
+  product = @cart_item.product
 
-    if new_quantity <= 0
-      @cart_item.destroy
-      redirect_to customers_cart_path, notice: "Item removed from cart."
+  if new_quantity <= 0
+    @cart_item.destroy
+    redirect_to customers_cart_path, notice: "Item removed from cart."
+  else
+    @cart_item.quantity = [new_quantity, product.stock].min
+    if @cart_item.save
+      redirect_to customers_cart_path, notice: "Cart updated."
     else
-      @cart_item.quantity = [new_quantity, product.stock].min
-      if @cart_item.save
-        redirect_to customers_cart_path, notice: "Cart updated."
-      else
-        redirect_to customers_cart_path, alert: "Could not update item."
-      end
+      redirect_to customers_cart_path, alert: "Could not update item."
     end
   end
+end
+
 
   def destroy
     @cart.cart_items.find(params[:id]).destroy

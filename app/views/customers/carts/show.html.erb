@@ -1,71 +1,97 @@
-<h1>Your Cart</h1>
+<h1 style="text-align: center; font-size: 3em; color: #FF5722; text-shadow: 2px 2px #FFB300;">🛒🧨 Your Crazy Cool Cart</h1>
 
 <% if @cart.cart_items.any? %>
   <% @cart.cart_items.each do |item| %>
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-      <h3><%= item.product.name %></h3>
-      <p>Current Quantity: <%= item.quantity %></p>
+    <div style="border: 3px dotted #FF9800; padding: 25px; margin: 20px auto; border-radius: 15px; max-width: 600px; background: #FFF8E1; box-shadow: 5px 5px 15px rgba(0,0,0,0.2);">
+      <h2 style="margin: 0; font-size: 1.8em; color: #E65100;">🛍️ <%= item.product.name %></h2>
+      <p style="margin: 10px 0; font-size: 1.2em;">📦 Quantity: <strong><%= item.quantity %></strong></p>
 
-      <%= form_with url: customers_cart_item_path(item), method: :patch, local: true do %>
-        <%= number_field_tag :quantity, item.quantity, min: 1, max: item.product.stock %>
-        <%= submit_tag "Update Quantity" %>
+      <%= form_with model: item, url: customers_cart_item_path(item), method: :patch, local: true do |f| %>
+        <div>
+          <label for="quantity_<%= item.id %>" style="font-weight: bold; color: #5D4037;">🔁 Update Quantity:</label>
+          <%= f.number_field :quantity, min: 1, max: item.product.stock, id: "quantity_#{item.id}", style: "margin-right: 10px; padding: 5px;" %>
+          <%= f.submit "🔄 Update", style: "background: #FF9800; color: white; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer;" %>
+        </div>
       <% end %>
 
-      <%= button_to "Remove", customers_cart_item_path(item), method: :delete, data: { confirm: "Remove this item?" } %>
+      <%= button_to "❌ Remove", customers_cart_item_path(item), method: :delete, data: { confirm: "Remove this item from your cart?" }, style: "margin-top: 15px; background: #D32F2F; color: white; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer;" %>
     </div>
   <% end %>
 
-  <hr>
+  <hr style="margin: 40px auto; border-top: 4px double #FFC107; max-width: 600px;">
 
-  <h2>Checkout</h2>
+  <h2 style="text-align: center; font-size: 2em; color: #009688;">💳💥 Checkout Like a Boss!</h2>
 
   <%= form_with url: customers_orders_path, method: :post, local: true do %>
     <% if current_customer.default_address %>
-      <p>
+      <div style="background: #E1F5FE; padding: 20px; border-radius: 10px; max-width: 600px; margin: 0 auto;">
         <label>
-          <%= radio_button_tag :use_default, "1", true %>
-          Use Default Address:
-          <br><%= current_customer.default_address.full_address %>
+          <%= radio_button_tag :use_default, "1", true, id: "use_default" %>
+          🏠 Use Default Address:
         </label>
-      </p>
+        <p style="margin: 8px 0; font-style: italic; background: #fff; padding: 10px; border-radius: 6px;">
+          <%= current_customer.default_address.full_address %>
+        </p>
 
-      <p>
         <label>
-          <%= radio_button_tag :use_default, "0" %>
-          Enter New Address:
+          <%= radio_button_tag :use_default, "0", false, id: "use_new" %>
+          ✍️ Enter New Address
         </label>
-      </p>
+      </div>
     <% else %>
       <%= hidden_field_tag :use_default, "0" %>
     <% end %>
 
-    <div id="new-address-field" style="<%= current_customer.default_address ? 'display:none;' : '' %>">
-      <%= label_tag :shipping_address, "Shipping Address" %><br>
-      <%= text_area_tag :shipping_address, nil, rows: 3, cols: 40 %>
+    <div id="new-address-field" style="max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s ease; margin: 20px auto; max-width: 600px;">
+      <%= label_tag :shipping_address, "📬 Shipping Address" %><br>
+      <%= text_area_tag :shipping_address, nil, rows: 3, style: "width: 100%; padding: 10px; border-radius: 8px; background: #FCE4EC;" %>
     </div>
 
-    <br>
-    <%= submit_tag "Place Order", class: "button" %>
-  <% end %>
+    <div style="margin-top: 20px; max-width: 600px; margin: 0 auto;">
+      <% if @payment_method %>
+        <p><strong>💰 Payment Method:</strong> <%= @payment_method.name %> (<%= @payment_method.payment_type.titleize %>)</p>
+        <%= hidden_field_tag :payment_method_id, @payment_method.id %>
+      <% else %>
+        <p style="color: red;">❗ This store has not set a payment method yet.</p>
+      <% end %>
+    </div>
 
+    <div style="text-align: center; margin-top: 30px;">
+      <%= submit_tag "🚀 Place Order Now!", style: "background: linear-gradient(45deg, #FF4081, #7C4DFF); color: white; font-size: 1.4em; padding: 12px 25px; border-radius: 10px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);" %>
+    </div>
+  <% end %>
 <% else %>
-  <p>Your cart is empty.</p>
+  <p style="text-align: center; font-size: 1.5em; color: #9E9E9E;">🛒 Your cart is lonely... go shop some more!</p>
 <% end %>
+
+<!-- Success Modal -->
+<div id="order-success-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background-color: #FFFFFF; border: 3px solid #4CAF50; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  padding: 30px; z-index: 9999; text-align: center;">
+  <h2 style="color: #4CAF50;">🎉 Thank You!</h2>
+  <p>Your order has been placed successfully.</p>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const defaultRadio = document.querySelector("input[name='use_default'][value='1']");
-    const newRadio = document.querySelector("input[name='use_default'][value='0']");
+    const defaultRadio = document.getElementById("use_default");
+    const newRadio = document.getElementById("use_new");
     const addressField = document.getElementById("new-address-field");
 
-    if (defaultRadio && newRadio && addressField) {
-      defaultRadio.addEventListener("change", () => {
-        addressField.style.display = "none";
-      });
+    const showAddressField = () => {
+      addressField.style.maxHeight = addressField.scrollHeight + "px";
+      addressField.style.opacity = "1";
+    };
 
-      newRadio.addEventListener("change", () => {
-        addressField.style.display = "block";
-      });
+    const hideAddressField = () => {
+      addressField.style.maxHeight = "0";
+      addressField.style.opacity = "0";
+    };
+
+    if (defaultRadio && newRadio) {
+      defaultRadio.addEventListener("change", hideAddressField);
+      newRadio.addEventListener("change", showAddressField);
+      if (newRadio.checked) showAddressField();
     }
   });
 </script>

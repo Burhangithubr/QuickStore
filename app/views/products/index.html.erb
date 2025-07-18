@@ -1,41 +1,77 @@
-<h1>My Store Products</h1>
+<!-- CRAZY STYLED STORE PRODUCTS PAGE -->
+<div style="min-height: 100vh; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); padding: 40px; font-family: 'Segoe UI', sans-serif; color: #fff;">
 
-<p>
-  <strong>Store:</strong> <%= @store.name %>
-</p>
+  <h1 style="text-align: center; font-size: 42px; font-weight: bold; margin-bottom: 40px;
+    background: linear-gradient(to right, #ff00cc, #3333ff); -webkit-background-clip: text; color: transparent;
+    text-shadow: 2px 2px 20px rgba(255, 255, 255, 0.2);">
+    🚀 My Store Products
+  </h1>
 
-<% if current_user.stock_manager? %>
-  <%= link_to "➕ Add New Product", new_store_product_path(@store), class: "btn btn-primary mb-3" %>
-<% end %>
+  <p style="text-align: center; font-size: 20px; margin-bottom: 30px;">
+    <strong>Store:</strong> <span style="color: #0ff;"><%= @store.name %></span>
+  </p>
 
-<% if @products.any? %>
-  <div class="product-list">
-    <% @products.each do |product| %>
-      <% next if product.nil? || product.id.nil? %>
+  <% if current_user.stock_manager? %>
+    <div style="text-align: center; margin-bottom: 40px;">
+      <%= link_to "➕ Add New Product", new_store_product_path(@store),
+          style: "padding: 12px 25px; font-size: 16px; font-weight: bold; border: none; border-radius: 30px;
+                 background: linear-gradient(to right, #00f260, #0575e6); color: white;
+                 box-shadow: 0 0 20px rgba(0,255,255,0.7); transition: all 0.3s ease;",
+          onmouseover: "this.style.transform='scale(1.1)'; this.style.boxShadow='0 0 40px #00f2fe'",
+          onmouseout: "this.style.transform='scale(1)'; this.style.boxShadow='0 0 20px rgba(0,255,255,0.7)'" %>
+    </div>
+  <% end %>
 
-      <div class="product-box mb-3 p-3 border rounded">
-        <h4><%= product.name %></h4>
-        <p><strong>Description:</strong> <%= product.description.presence || "N/A" %></p>
-        <p><strong>Price:</strong> $<%= number_with_precision(product.price, precision: 2) %></p>
-        <p><strong>Stock:</strong> <%= product.stock %></p>
-        <p><strong>Max Per Order:</strong> <%= product.max_purchase_limit || "Unlimited" %></p>
+  <% if @products.any? %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+      <% @products.each do |product| %>
+        <% next if product.nil? || product.id.nil? %>
 
-        <% if product.image.present? %>
-          <div class="product-image my-2">
-            <img src="<%= product.image %>" alt="<%= product.name %>" style="max-width: 150px;">
-          </div>
-        <% end %>
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.1); transition: transform 0.3s ease;
+            backdrop-filter: blur(5px);" 
+             onmouseover="this.style.transform='scale(1.03)'" 
+             onmouseout="this.style.transform='scale(1)'">
 
-        <div class="mt-2">
+          <h3 style="color: #ffd700;"><%= product.name %></h3>
+          <p><strong>Description:</strong> <%= product.description.presence || "N/A" %></p>
+          <p><strong>Price:</strong> $<%= number_with_precision(product.price, precision: 2) %></p>
+          <p><strong>Stock:</strong> <%= product.stock %></p>
+          <p><strong>Max Per Order:</strong> <%= product.max_purchase_limit || "Unlimited" %></p>
+
+          <% if product.image.present? %>
+            <div style="margin: 10px 0;">
+              <img src="<%= product.image %>" alt="<%= product.name %>"
+                   style="max-width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(255,255,255,0.2);">
+            </div>
+          <% end %>
+
           <% if current_user.stock_manager? %>
-            <%= link_to "✏️ Edit", edit_store_product_path(@store, product), class: "btn btn-sm btn-warning" %>
-            <%= link_to "🗑 Delete", store_product_path(@store, product), method: :delete,
-                        data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+            <div style="margin-top: 15px;">
+              <%= link_to "✏️ Edit", edit_store_product_path(@store, product),
+                    style: "margin-right: 10px; padding: 8px 16px; font-weight: bold;
+                    background: linear-gradient(to right, #f7971e, #ffd200); color: #000;
+                    border: none; border-radius: 20px; box-shadow: 0 0 10px rgba(255,255,0,0.5);
+                    transition: all 0.3s ease;",
+                    onmouseover: "this.style.transform='scale(1.05)'",
+                    onmouseout: "this.style.transform='scale(1)'" %>
+
+              <%= link_to "🗑 Delete", store_product_path(@store, product), method: :delete,
+                    data: { confirm: "Are you sure?" },
+                    style: "padding: 8px 16px; font-weight: bold;
+                    background: linear-gradient(to right, #f85032, #e73827); color: white;
+                    border: none; border-radius: 20px; box-shadow: 0 0 15px rgba(255,0,0,0.4);
+                    transition: all 0.3s ease;",
+                    onmouseover: "this.style.transform='scale(1.05)'",
+                    onmouseout: "this.style.transform='scale(1)'" %>
+            </div>
           <% end %>
         </div>
-      </div>
-    <% end %>
-  </div>
-<% else %>
-  <p class="text-muted">No products available for this store.</p>
-<% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p style="text-align: center; font-style: italic; color: #ccc; margin-top: 40px;">
+      No products available for this store 😢.
+    </p>
+  <% end %>
+</div>

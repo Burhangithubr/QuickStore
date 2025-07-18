@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+   before_action :set_cart
   allow_browser versions: :modern
 
   protected
@@ -22,4 +23,22 @@ class ApplicationController < ActionController::Base
     root_path
   end
 end
+
+def after_sign_out_path_for(resource_or_scope)
+    if resource_or_scope == :customer
+      new_customer_session_path
+    elsif resource_or_scope == :user
+      new_user_session_path
+    else
+      root_path
+    end
+  end
+
+  def set_cart
+    return unless customer_signed_in?
+
+    @cart = current_customer.cart || current_customer.create_cart
+  end
+
+
 end

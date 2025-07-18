@@ -1,15 +1,61 @@
-<h1>Owner Dashboard</h1>
-<p>Welcome, <%= current_user.email %></p>
+<!-- Crazy Neon Owner Dashboard with Hover Effects -->
+<div style="min-height: 100vh; background: linear-gradient(135deg, #1f1c2c, #928dab); color: white; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
 
-<%= link_to "➕ Add New Store", new_store_path, class: "btn btn-primary" %>
+  <!-- Header -->
+  <h1 style="text-align: center; font-size: 40px; font-weight: 800;
+    background: linear-gradient(to right, #f7971e, #ffd200);
+    -webkit-background-clip: text; color: transparent;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);">
+    🚀 Owner Dashboard
+  </h1>
 
-<h2>Stores:</h2>
-<ul>
-  <% @stores.each do |store| %>
-    <li>
-      <%= link_to store.name, store_path(store), class: "store-link" %>
-    </li>
-  <% end %>
-</ul>
+  <p style="text-align: center; font-size: 18px; margin-top: 10px;">
+    Welcome, <strong><%= current_user.email %></strong>
+  </p>
 
-<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-button" %>
+  <!-- Add New Store Button -->
+  <div style="text-align: center; margin-top: 30px;">
+    <%= link_to "➕ Add New Store", new_store_path,
+      style: "padding: 12px 25px; font-size: 16px; font-weight: bold; color: white;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      border-radius: 12px; border: none; text-decoration: none;
+      box-shadow: 0 0 15px rgba(0,242,254,0.6);
+      display: inline-block; transition: all 0.3s ease;",
+      onmouseover: "this.style.transform='scale(1.07)'; this.style.boxShadow='0 0 25px rgba(0,242,254,1)'",
+      onmouseout: "this.style.transform='scale(1)'; this.style.boxShadow='0 0 15px rgba(0,242,254,0.6)'" %>
+  </div>
+
+  <!-- Stores List -->
+  <h2 style="margin-top: 50px; font-size: 28px; text-align: center;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">
+    🏬 Your Stores
+  </h2>
+
+     <ul style="list-style: none; padding: 0; max-width: 600px; margin: 30px auto;">
+    <% @stores.each do |store| %>
+      <li style="margin: 15px 0; padding: 15px 25px;
+        background: rgba(255,255,255,0.1); border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;"
+        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 20px rgba(255,255,255,0.6)'"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.3)'">
+        <%= link_to store.name, store_path(store),
+          style: 'color: #fff; font-size: 18px; text-decoration: none; font-weight: bold;' %>
+      </li>
+    <% end %>
+  </ul>
+
+
+
+  <!-- Logout Button -->
+  <div style="text-align: center; margin-top: 40px;">
+    <%= button_to "🚪 Logout", destroy_user_session_path, method: :delete,
+      style: "padding: 10px 25px; font-size: 16px; font-weight: bold; color: white;
+      background: linear-gradient(to right, #ff512f, #dd2476); border: none;
+      border-radius: 12px; box-shadow: 0 0 15px rgba(255, 81, 47, 0.6);
+      cursor: pointer; transition: all 0.3s ease;",
+      onmouseover: "this.style.transform='scale(1.07)'; this.style.boxShadow='0 0 25px rgba(255, 81, 47, 1)'",
+      onmouseout: "this.style.transform='scale(1)'; this.style.boxShadow='0 0 15px rgba(255, 81, 47, 0.6)'" %>
+  </div>
+
+</div>
